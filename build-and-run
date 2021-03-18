@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# mvn install + spigot-run
+#
+set -e
+
+mvn install -f "pom.xml"
+
+cd "bin-test"
+[ ! -f "bin/spigot.jar" ] && ./spigot-install
+
+./spigot-run

@@ -1,0 +1,7 @@
+name: McSpigot-Kids
+main: io.github.portablestew.McSpigotKids
+version: 0.1
+commands:
+  snap:
+    description: "Causes a fraction of all living entities to die (by default 50%)"
+    usage: "Usage: '/snap' to kill 50% of entities, or '/snap (percentage)' e.g. '/snap 100' to kill 100%"
