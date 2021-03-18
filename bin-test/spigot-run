@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# Symlink any locally built plugin jars, then launch Spigot!
+#
+set -e
+
+JAVAOPTS="-Xms1G -Xmx2G -XX:+UseG1GC"
+JARS_GLOB="../target/"*"-SNAPSHOT.jar"
+KILL_TIMEOUT="10"
+
+# Symlink built plugin jars
+(
+    cd "bin/plugins"
+    for jar in "../../"$JARS_GLOB; do
+        [ ! -f "$jar" ] && echo "No jar file: $JARS_GLOB" && exit 1
+
+        jarDest="$(basename "$jar")"
+        ln -vfs "$jar"
+    done
+)
+
+cd "bin/"
+java $JAVAOPTS -jar "spigot.jar" &
+pid=$!
+echo "Spigot is pid $pid."
+
+# HACK: Spigot goes crazy on shutdown. Give it several seconds, then force it
+function killSpigot
+{
+    echo ""
+    echo "Shutting down -- signalling $pid..."
+    ( sleep "$KILL_TIMEOUT" && echo "Timeout, hard kill." && kill -9 "$pid" ) &
+    timeoutPid=$!
+    kill "$pid"
+    wait "$pid"
+    kill "$timeoutPid"
+    echo "Clean exit."
+}
+trap killSpigot exit
+wait "$pid"

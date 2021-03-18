@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Use BuildTools to download and build latest Spigot.
+#
+set -e
+
+VERSION="$1"
+[ -z "$VERSION" ] && VERSION="latest"
+
+# BuildTools
+(
+	[ -d "BuildTools" ] || mkdir "BuildTools"
+	cd "BuildTools"
+
+	# Download latest BuildTools
+	wget -O BuildTools.jar "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
+
+	# Build
+	echo "Java installed: $(which java)"
+	java -jar BuildTools.jar --rev $VERSION
+)
+
+# bin
+(
+	[ -d "bin" ] || mkdir "bin"
+	cd "bin"
+
+	# Symlink into bin/
+	[ -L "spigot.jar" ] && rm "spigot.jar"
+	ln -s "$(ls -t "../BuildTools/spigot"*.jar | head -n1)" "spigot.jar"
+
+	# Accept eula
+	[ -f "eula.txt" ] || echo "eula=true" | tee "eula.txt"
+)
+
+# bin/plugins
+(
+	[ -d "bin/plugins" ] || mkdir "bin/plugins"
+	cd "bin/plugins"
+
+	wget -O "Geyser-Spigot.jar" "https://ci.nukkitx.com/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/target/Geyser-Spigot.jar"
+	wget -O "floodgate-bukkit.jar" "https://ci.nukkitx.com/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/bukkit/target/floodgate-bukkit.jar"
+	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/jar/target/ViaVersion-3.2.2-SNAPSHOT.jar"
+)
+
+echo "Finished: $VERSION"
