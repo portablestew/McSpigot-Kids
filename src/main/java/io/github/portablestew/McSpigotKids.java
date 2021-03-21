@@ -15,6 +15,7 @@ public final class McSpigotKids extends JavaPlugin {
         this.getLogger().info("McSpigotKids - plugin enabled.");
 
         this.getCommand("snap").setExecutor(new SnapExecutor());
+        this.getCommand("bigboom").setExecutor(new BigBoomExecutor());
     }
 
     @Override
