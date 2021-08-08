@@ -20,7 +20,7 @@ KILL_TIMEOUT="10"
 )
 
 cd "bin/"
-java $JAVAOPTS -jar "spigot.jar" &
+java $JAVAOPTS -jar "spigot.jar" "$@" &
 pid=$!
 echo "Spigot is pid $pid."
 

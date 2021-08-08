@@ -9,4 +9,5 @@ mvn install -f "pom.xml"
 cd "bin-test"
 [ ! -f "bin/spigot.jar" ] && ./spigot-install
 
-./spigot-run
+./spigot-run "$@"
+

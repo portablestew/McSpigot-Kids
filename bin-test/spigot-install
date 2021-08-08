@@ -39,8 +39,8 @@ VERSION="$1"
 	cd "bin/plugins"
 
 	wget -O "Geyser-Spigot.jar" "https://ci.nukkitx.com/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/target/Geyser-Spigot.jar"
-	wget -O "floodgate-bukkit.jar" "https://ci.nukkitx.com/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/bukkit/target/floodgate-bukkit.jar"
-	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/jar/target/ViaVersion-3.2.2-SNAPSHOT.jar"
+	wget -O "floodgate-spigot.jar" "https://ci.opencollab.dev//job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/target/floodgate-spigot.jar"
+	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/ViaVersion-4.0.2-SNAPSHOT.jar"
 )
 
 echo "Finished: $VERSION"
