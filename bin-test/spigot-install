@@ -4,6 +4,8 @@
 #
 set -e
 
+VIAVERSION_VERSION="ViaVersion-4.5.1"
+
 VERSION="$1"
 [ -z "$VERSION" ] && VERSION="latest"
 
@@ -39,8 +41,8 @@ VERSION="$1"
 	cd "bin/plugins"
 
 	wget -O "Geyser-Spigot.jar" "https://ci.nukkitx.com/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/target/Geyser-Spigot.jar"
-	wget -O "floodgate-spigot.jar" "https://ci.opencollab.dev//job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/target/floodgate-spigot.jar"
-	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/ViaVersion-4.0.2-SNAPSHOT.jar"
+	wget -O "floodgate-spigot.jar" "https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/target/floodgate-spigot.jar"
+	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/${VIAVERSION_VERSION}.jar"
 )
 
 echo "Finished: $VERSION"
