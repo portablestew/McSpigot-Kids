@@ -4,12 +4,11 @@
 #
 set -e
 
-VIAVERSION_VERSION="ViaVersion-4.5.1"
-
 VERSION="$1"
 [ -z "$VERSION" ] && VERSION="latest"
 
 # BuildTools
+function install_buildtools
 (
 	[ -d "BuildTools" ] || mkdir "BuildTools"
 	cd "BuildTools"
@@ -23,6 +22,7 @@ VERSION="$1"
 )
 
 # bin
+function install_bin
 (
 	[ -d "bin" ] || mkdir "bin"
 	cd "bin"
@@ -36,13 +36,31 @@ VERSION="$1"
 )
 
 # bin/plugins
+function install_plugins
 (
 	[ -d "bin/plugins" ] || mkdir "bin/plugins"
 	cd "bin/plugins"
 
-	wget -O "Geyser-Spigot.jar" "https://ci.nukkitx.com/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/target/Geyser-Spigot.jar"
-	wget -O "floodgate-spigot.jar" "https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/target/floodgate-spigot.jar"
-	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/${VIAVERSION_VERSION}.jar"
+	# Scrape the viaversion page to get its latest
+    VIAVERSION_VERSION="latest"
+	function scrape_viaversion
+	{
+		scrape="$(curl -s "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/")"
+		scrape="${scrape##*ViaVersion-}"
+		scrape="${scrape%%-SNAPSHOT.jar*}"
+
+		VIAVERSION_VERSION="${scrape}"
+		echo "ViaVersion = $VIAVERSION_VERSION"
+	}
+	scrape_viaversion
+
+	wget -O "Geyser-Spigot.jar" "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot"
+	wget -O "floodgate-spigot.jar" "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot"
+	wget -O "ViaVersion.jar" "https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/ViaVersion-${VIAVERSION_VERSION}-SNAPSHOT.jar"
 )
+
+install_buildtools
+install_bin
+install_plugins
 
 echo "Finished: $VERSION"
